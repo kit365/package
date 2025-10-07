@@ -30,10 +30,6 @@
                     <div id="timeCards" class="card-container"></div>
                 </div>
                 <div class="card-column">
-                    <h3>👤 Triết Gia</h3>
-                    <div id="authorCards" class="card-container"></div>
-                </div>
-                <div class="card-column">
                     <h3>📖 Tác Phẩm Triết Học</h3>
                     <div id="workCards" class="card-container"></div>
                 </div>
@@ -45,38 +41,52 @@
                 <div id="matchingArea" class="matching-area">
                     <div class="match-slot" data-set="1">
                         <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
-                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
                         <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                        <div class="detail-button" style="display: none;">
+                            <button class="btn-detail" onclick="showDetail(1)">📖 Chi tiết</button>
+                        </div>
                     </div>
                     <div class="match-slot" data-set="2">
                         <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
-                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
                         <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                        <div class="detail-button" style="display: none;">
+                            <button class="btn-detail" onclick="showDetail(2)">📖 Chi tiết</button>
+                        </div>
                     </div>
                     <div class="match-slot" data-set="3">
                         <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
-                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
                         <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                        <div class="detail-button" style="display: none;">
+                            <button class="btn-detail" onclick="showDetail(3)">📖 Chi tiết</button>
+                        </div>
                     </div>
                     <div class="match-slot" data-set="4">
                         <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
-                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
                         <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                        <div class="detail-button" style="display: none;">
+                            <button class="btn-detail" onclick="showDetail(4)">📖 Chi tiết</button>
+                        </div>
                     </div>
                     <div class="match-slot" data-set="5">
                         <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
-                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
                         <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                        <div class="detail-button" style="display: none;">
+                            <button class="btn-detail" onclick="showDetail(5)">📖 Chi tiết</button>
+                        </div>
                     </div>
                     <div class="match-slot" data-set="6">
                         <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
-                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
                         <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                        <div class="detail-button" style="display: none;">
+                            <button class="btn-detail" onclick="showDetail(6)">📖 Chi tiết</button>
+                        </div>
                     </div>
                     <div class="match-slot" data-set="7">
                         <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
-                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
                         <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                        <div class="detail-button" style="display: none;">
+                            <button class="btn-detail" onclick="showDetail(7)">📖 Chi tiết</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,6 +99,15 @@
                 <p id="resultMessage">Bạn đã hoàn thành game!</p>
                 <div id="finalScore"></div>
                 <button id="playAgainBtn" class="btn-primary">Chơi lại</button>
+            </div>
+        </div>
+
+        <!-- Popup chi tiết -->
+        <div id="detailModal" class="modal hidden">
+            <div class="modal-content detail-modal">
+                <h2 id="detailTitle">📚 Chi tiết tác phẩm</h2>
+                <div id="detailContent"></div>
+                <button id="closeDetailBtn" class="btn-primary">Đóng</button>
             </div>
         </div>
     </div>

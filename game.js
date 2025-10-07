@@ -22,13 +22,11 @@ class PhilosophyTimelineGame {
         
         // Create arrays for all cards
         const timeCards = [];
-        const authorCards = [];
         const workCards = [];
         
         // Add correct cards
         correctSets.forEach(set => {
             timeCards.push({ id: set.id, content: set.time, type: 'time', isCorrect: true });
-            authorCards.push({ id: set.id, content: set.author, type: 'author', isCorrect: true });
             workCards.push({ id: set.id, content: set.work, type: 'work', isCorrect: true });
         });
         
@@ -36,21 +34,16 @@ class PhilosophyTimelineGame {
         traps.times.forEach((time, index) => {
             timeCards.push({ id: `trap-time-${index}`, content: time, type: 'time', isCorrect: false });
         });
-        traps.authors.forEach((author, index) => {
-            authorCards.push({ id: `trap-author-${index}`, content: author, type: 'author', isCorrect: false });
-        });
         traps.works.forEach((work, index) => {
             workCards.push({ id: `trap-work-${index}`, content: work, type: 'work', isCorrect: false });
         });
         
         // Shuffle cards
         this.shuffleArray(timeCards);
-        this.shuffleArray(authorCards);
         this.shuffleArray(workCards);
         
         // Render cards
         this.renderCards('timeCards', timeCards);
-        this.renderCards('authorCards', authorCards);
         this.renderCards('workCards', workCards);
     }
 
@@ -91,11 +84,15 @@ class PhilosophyTimelineGame {
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('card')) {
                 if (!e.target.draggable) {
-                    // Click on placed card - return to deck
-                    this.returnCardToDeck(e.target);
+                    // Click on placed card - return to deck (only if game not completed)
+                    if (this.completedSets < this.totalSets) {
+                        this.returnCardToDeck(e.target);
+                    }
                 } else {
-                    // Click on deck card - select it
-                    this.selectCard(e.target);
+                    // Click on deck card - select it (only if game not completed)
+                    if (this.completedSets < this.totalSets) {
+                        this.selectCard(e.target);
+                    }
                 }
             }
         });
@@ -119,7 +116,7 @@ class PhilosophyTimelineGame {
 
             // Click events for slots
             slot.addEventListener('click', () => {
-                if (this.selectedCard) {
+                if (this.selectedCard && this.completedSets < this.totalSets) {
                     this.handleSlotClick(slot);
                 }
             });
@@ -134,6 +131,11 @@ class PhilosophyTimelineGame {
         document.getElementById('playAgainBtn').addEventListener('click', () => {
             this.resetGame();
             this.hideModal();
+        });
+
+        // Close detail modal button
+        document.getElementById('closeDetailBtn').addEventListener('click', () => {
+            this.hideDetailModal();
         });
     }
 
@@ -252,14 +254,13 @@ class PhilosophyTimelineGame {
         
         // Check if all slots in this set are filled
         const filledSlots = Array.from(slots).filter(slot => slot.classList.contains('filled'));
-        if (filledSlots.length < 3) return;
+        if (filledSlots.length < 2) return;
         
         // Check if the combination is correct
         const timeCard = this.placedCards.get(`${setId}-time`);
-        const authorCard = this.placedCards.get(`${setId}-author`);
         const workCard = this.placedCards.get(`${setId}-work`);
         
-        const isCorrectSet = this.isValidCombination(timeCard.cardId, authorCard.cardId, workCard.cardId);
+        const isCorrectSet = this.isValidCombination(timeCard.cardId, workCard.cardId);
         
         if (isCorrectSet) {
             this.handleCorrectSet(matchSlot);
@@ -268,12 +269,11 @@ class PhilosophyTimelineGame {
         }
     }
 
-    isValidCombination(timeId, authorId, workId) {
+    isValidCombination(timeId, workId) {
         const { correctSets } = gameData;
         
         return correctSets.some(set => 
             set.id.toString() === timeId && 
-            set.id.toString() === authorId && 
             set.id.toString() === workId
         );
     }
@@ -287,12 +287,20 @@ class PhilosophyTimelineGame {
         // Show success animation
         this.showSuccess(matchSlot);
         
-        // Show educational information
-        this.showPhilosophicalInfo(matchSlot);
+        // Show detail button
+        this.showDetailButton(matchSlot);
         
         // Check if game is complete
         if (this.completedSets === this.totalSets) {
+            document.body.classList.add('game-completed');
             setTimeout(() => this.showGameComplete(), 1000);
+        }
+    }
+
+    showDetailButton(matchSlot) {
+        const detailButton = matchSlot.querySelector('.detail-button');
+        if (detailButton) {
+            detailButton.style.display = 'flex';
         }
     }
 
@@ -430,11 +438,18 @@ class PhilosophyTimelineGame {
         this.placedCards.clear();
         this.deselectCard();
         
+        // Remove game completed class
+        document.body.classList.remove('game-completed');
+        
         // Reset all slots
         document.querySelectorAll('.slot').forEach(slot => {
-            slot.innerHTML = slot.dataset.type === 'time' ? 'Thả thẻ thời gian' :
-                            slot.dataset.type === 'author' ? 'Thả thẻ triết gia' : 'Thả thẻ tác phẩm';
+            slot.innerHTML = slot.dataset.type === 'time' ? 'Thả thẻ thời gian' : 'Thả thẻ tác phẩm';
             slot.classList.remove('filled', 'error', 'clickable');
+        });
+        
+        // Hide all detail buttons
+        document.querySelectorAll('.detail-button').forEach(btn => {
+            btn.style.display = 'none';
         });
         
         // Reset match slots
@@ -492,6 +507,19 @@ class PhilosophyTimelineGame {
         }, 300);
     }
 
+    showDetailModal(setId) {
+        const detail = gameData.details[setId];
+        if (detail) {
+            document.getElementById('detailTitle').textContent = detail.title;
+            document.getElementById('detailContent').innerHTML = detail.content;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+    }
+
+    hideDetailModal() {
+        document.getElementById('detailModal').classList.add('hidden');
+    }
+
     shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -500,7 +528,12 @@ class PhilosophyTimelineGame {
     }
 }
 
+// Global function for detail buttons
+function showDetail(setId) {
+    window.philosophyGame.showDetailModal(setId);
+}
+
 // Initialize game when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new PhilosophyTimelineGame();
+    window.philosophyGame = new PhilosophyTimelineGame();
 });
