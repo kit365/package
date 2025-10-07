@@ -216,63 +216,27 @@ header p {
     z-index: 1000;
 }
 
-/* Different card colors - Philosophy theme with timeline progression */
-.card.time-card {
-    background: linear-gradient(145deg, #e74c3c, #c0392b);
-    color: white;
-    border-left: 4px solid #a93226;
-    position: relative;
-}
-
-.card.time-card::after {
-    content: '📅';
-    position: absolute;
-    top: 5px;
-    right: 8px;
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
-
-.card.author-card {
-    background: linear-gradient(145deg, #3498db, #2980b9);
-    color: white;
-    border-left: 4px solid #1f618d;
-    position: relative;
-}
-
-.card.author-card::after {
-    content: '👤';
-    position: absolute;
-    top: 5px;
-    right: 8px;
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
-
+/* Unified card colors - All cards same color for equal difficulty */
+.card.time-card,
+.card.author-card,
 .card.work-card {
-    background: linear-gradient(145deg, #9b59b6, #8e44ad);
+    background: linear-gradient(145deg, #34495e, #2c3e50);
     color: white;
-    border-left: 4px solid #7d3c98;
+    border-left: 4px solid #1a252f;
     position: relative;
 }
 
-.card.work-card::after {
-    content: '📚';
-    position: absolute;
-    top: 5px;
-    right: 8px;
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
+/* No icons - pure challenge! */
 
 .card.trap {
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border: 2px solid transparent;
+    background: linear-gradient(145deg, #34495e, #2c3e50);
+    color: white;
+    border-left: 4px solid #1a252f;
     position: relative;
     overflow: hidden;
 }
 
-/* Loại bỏ hiệu ứng khác biệt của thẻ bẫy */
+/* Trap cards có hiệu ứng đặc biệt để phân biệt */
 .card.trap::before {
     content: '';
     position: absolute;
@@ -280,13 +244,15 @@ header p {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
     transition: left 0.5s;
 }
 
 .card.trap:hover::before {
     left: 100%;
 }
+
+/* No trap icon - pure challenge! */
 
 /* Matching Section */
 .matching-section {
@@ -358,22 +324,10 @@ header p {
     left: 100%;
 }
 
-/* Timeline progression colors for match slots */
-.match-slot[data-set="1"] { border-color: rgba(231,76,60,0.3); }
-.match-slot[data-set="2"] { border-color: rgba(230,126,34,0.3); }
-.match-slot[data-set="3"] { border-color: rgba(241,196,15,0.3); }
-.match-slot[data-set="4"] { border-color: rgba(39,174,96,0.3); }
-.match-slot[data-set="5"] { border-color: rgba(41,128,185,0.3); }
-.match-slot[data-set="6"] { border-color: rgba(155,89,182,0.3); }
-.match-slot[data-set="7"] { border-color: rgba(142,68,173,0.3); }
-
-.match-slot[data-set="1"]:hover { border-color: rgba(231,76,60,0.6); }
-.match-slot[data-set="2"]:hover { border-color: rgba(230,126,34,0.6); }
-.match-slot[data-set="3"]:hover { border-color: rgba(241,196,15,0.6); }
-.match-slot[data-set="4"]:hover { border-color: rgba(39,174,96,0.6); }
-.match-slot[data-set="5"]:hover { border-color: rgba(41,128,185,0.6); }
-.match-slot[data-set="6"]:hover { border-color: rgba(155,89,182,0.6); }
-.match-slot[data-set="7"]:hover { border-color: rgba(142,68,173,0.6); }
+/* Unified match slot colors - All same color */
+.match-slot:hover {
+    border-color: rgba(255,255,255,0.4);
+}
 
 .match-slot.complete {
     border-color: #27ae60;
