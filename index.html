@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Triết Học Mác - Lịch Sử Chủ Nghĩa Mác</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Timeline Triết Học Mác</h1>
+            <p>Khám phá lịch sử hình thành và phát triển của chủ nghĩa Mác</p>
+        </header>
+
+        <div class="game-info">
+            <div class="score-board">
+                <span class="score">Điểm: <span id="score">0</span></span>
+                <span class="progress">Tiến độ: <span id="progress">0/7</span></span>
+            </div>
+            <button id="resetBtn" class="btn-reset">🔄 Chơi lại</button>
+        </div>
+
+        <div class="game-area">
+            <!-- Khu vực thẻ chưa ghép -->
+            <div class="cards-section">
+                <div class="card-column">
+                    <h3>📅 Thời Gian</h3>
+                    <div id="timeCards" class="card-container"></div>
+                </div>
+                <div class="card-column">
+                    <h3>👤 Triết Gia</h3>
+                    <div id="authorCards" class="card-container"></div>
+                </div>
+                <div class="card-column">
+                    <h3>📖 Tác Phẩm Triết Học</h3>
+                    <div id="workCards" class="card-container"></div>
+                </div>
+            </div>
+
+            <!-- Khu vực ghép thẻ -->
+            <div class="matching-section">
+                <h3>🎯 Ghép Timeline Triết Học</h3>
+                <div id="matchingArea" class="matching-area">
+                    <div class="match-slot" data-set="1">
+                        <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
+                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
+                        <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                    </div>
+                    <div class="match-slot" data-set="2">
+                        <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
+                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
+                        <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                    </div>
+                    <div class="match-slot" data-set="3">
+                        <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
+                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
+                        <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                    </div>
+                    <div class="match-slot" data-set="4">
+                        <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
+                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
+                        <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                    </div>
+                    <div class="match-slot" data-set="5">
+                        <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
+                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
+                        <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                    </div>
+                    <div class="match-slot" data-set="6">
+                        <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
+                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
+                        <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                    </div>
+                    <div class="match-slot" data-set="7">
+                        <div class="slot time-slot" data-type="time">Thả thẻ thời gian</div>
+                        <div class="slot author-slot" data-type="author">Thả thẻ triết gia</div>
+                        <div class="slot work-slot" data-type="work">Thả thẻ tác phẩm</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup kết quả -->
+        <div id="resultModal" class="modal hidden">
+            <div class="modal-content">
+                <h2 id="resultTitle">🎉 Chúc mừng!</h2>
+                <p id="resultMessage">Bạn đã hoàn thành game!</p>
+                <div id="finalScore"></div>
+                <button id="playAgainBtn" class="btn-primary">Chơi lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game-data.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
