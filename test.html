@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - GitHub Pages</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-container { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        #workCards { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Test GitHub Pages</h1>
+    
+    <div class="test-container">
+        <h2>Test 1: UTF-8 Encoding</h2>
+        <p>Tiếng Việt: Tác Phẩm Triết Học</p>
+        <p>English: Philosophy Works</p>
+    </div>
+    
+    <div class="test-container">
+        <h2>Test 2: Element ID</h2>
+        <div id="workCards">Work Cards Container</div>
+        <button onclick="testWorkCards()">Test workCards Element</button>
+        <p id="result"></p>
+    </div>
+    
+    <div class="test-container">
+        <h2>Test 3: JavaScript</h2>
+        <button onclick="testJS()">Test JavaScript</button>
+        <p id="jsResult"></p>
+    </div>
+
+    <script>
+        function testWorkCards() {
+            const container = document.getElementById('workCards');
+            const result = document.getElementById('result');
+            
+            if (container) {
+                result.innerHTML = '✅ workCards element found successfully!';
+                result.style.color = 'green';
+                container.innerHTML += '<br>✅ JavaScript can access this element';
+            } else {
+                result.innerHTML = '❌ workCards element NOT found!';
+                result.style.color = 'red';
+            }
+        }
+        
+        function testJS() {
+            const result = document.getElementById('jsResult');
+            try {
+                // Test basic JavaScript functionality
+                const testData = {
+                    correctSets: [
+                        { id: 1, time: "1844", work: "Test Work" }
+                    ]
+                };
+                
+                result.innerHTML = '✅ JavaScript working! Test data: ' + JSON.stringify(testData);
+                result.style.color = 'green';
+            } catch (error) {
+                result.innerHTML = '❌ JavaScript error: ' + error.message;
+                result.style.color = 'red';
+            }
+        }
+        
+        // Auto-test on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                testWorkCards();
+                testJS();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

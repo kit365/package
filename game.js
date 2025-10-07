@@ -12,9 +12,11 @@ class PhilosophyTimelineGame {
     }
 
     init() {
+        console.log('Initializing Philosophy Timeline Game...');
         this.createCards();
         this.setupEventListeners();
         this.updateUI();
+        console.log('Game initialized successfully');
     }
 
     createCards() {
@@ -49,7 +51,13 @@ class PhilosophyTimelineGame {
 
     renderCards(containerId, cards) {
         const container = document.getElementById(containerId);
+        if (!container) {
+            console.error(`Container not found: ${containerId}`);
+            return;
+        }
         container.innerHTML = '';
+        
+        console.log(`Rendering ${cards.length} cards for ${containerId}`);
         
         cards.forEach(card => {
             const cardElement = document.createElement('div');
@@ -535,5 +543,29 @@ function showDetail(setId) {
 
 // Initialize game when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    window.philosophyGame = new PhilosophyTimelineGame();
+    try {
+        window.philosophyGame = new PhilosophyTimelineGame();
+    } catch (error) {
+        console.error('Error initializing game:', error);
+        // Fallback: try again after a short delay
+        setTimeout(() => {
+            try {
+                window.philosophyGame = new PhilosophyTimelineGame();
+            } catch (retryError) {
+                console.error('Failed to initialize game after retry:', retryError);
+            }
+        }, 100);
+    }
 });
+
+// Also try to initialize if DOM is already loaded
+if (document.readyState === 'loading') {
+    // DOM is still loading, the event listener above will handle it
+} else {
+    // DOM is already loaded, initialize immediately
+    try {
+        window.philosophyGame = new PhilosophyTimelineGame();
+    } catch (error) {
+        console.error('Error initializing game (DOM ready):', error);
+    }
+}
