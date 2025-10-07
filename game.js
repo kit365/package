@@ -5,6 +5,7 @@ class PhilosophyTimelineGame {
         this.completedSets = 0;
         this.totalSets = 7;
         this.draggedCard = null;
+        this.selectedCard = null; // Track selected card for click mode
         this.placedCards = new Map(); // Track placed cards
         
         this.init();
@@ -85,6 +86,19 @@ class PhilosophyTimelineGame {
                 this.draggedCard = null;
             }
         });
+
+        // Click events for cards
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('card')) {
+                if (!e.target.draggable) {
+                    // Click on placed card - return to deck
+                    this.returnCardToDeck(e.target);
+                } else {
+                    // Click on deck card - select it
+                    this.selectCard(e.target);
+                }
+            }
+        });
         
         // Drop events for slots
         document.querySelectorAll('.slot').forEach(slot => {
@@ -102,6 +116,13 @@ class PhilosophyTimelineGame {
                 slot.classList.remove('drag-over');
                 this.handleDrop(slot);
             });
+
+            // Click events for slots
+            slot.addEventListener('click', () => {
+                if (this.selectedCard) {
+                    this.handleSlotClick(slot);
+                }
+            });
         });
         
         // Reset button
@@ -114,6 +135,68 @@ class PhilosophyTimelineGame {
             this.resetGame();
             this.hideModal();
         });
+    }
+
+    selectCard(card) {
+        // Deselect previous card
+        document.querySelectorAll('.card.selected').forEach(c => {
+            c.classList.remove('selected');
+        });
+        
+        // Select new card
+        card.classList.add('selected');
+        this.selectedCard = card;
+        
+        // Add clickable style to compatible slots
+        this.updateSlotStyles();
+    }
+
+    updateSlotStyles() {
+        document.querySelectorAll('.slot').forEach(slot => {
+            if (this.selectedCard) {
+                const cardType = this.selectedCard.dataset.type;
+                const slotType = slot.dataset.type;
+                
+                if (cardType === slotType && !slot.querySelector('.card')) {
+                    slot.classList.add('clickable');
+                } else {
+                    slot.classList.remove('clickable');
+                }
+            } else {
+                slot.classList.remove('clickable');
+            }
+        });
+    }
+
+    handleSlotClick(slot) {
+        const cardType = this.selectedCard.dataset.type;
+        const slotType = slot.dataset.type;
+        
+        // Check if card type matches slot type
+        if (cardType !== slotType) {
+            this.showError(slot);
+            this.deselectCard();
+            return;
+        }
+        
+        // Check if slot is already filled
+        if (slot.querySelector('.card')) {
+            this.showError(slot);
+            this.deselectCard();
+            return;
+        }
+        
+        // Place card in slot
+        this.placeCard(slot, this.selectedCard);
+        this.deselectCard();
+    }
+
+    deselectCard() {
+        if (this.selectedCard) {
+            this.selectedCard.classList.remove('selected');
+            this.selectedCard = null;
+            this.updateSlotStyles();
+        }
     }
 
     handleDrop(slot) {
@@ -135,13 +218,13 @@ class PhilosophyTimelineGame {
         }
         
         // Place card in slot
-        this.placeCard(slot);
+        this.placeCard(slot, this.draggedCard);
     }
 
-    placeCard(slot) {
-        const card = this.draggedCard.cloneNode(true);
+    placeCard(slot, sourceCard) {
+        const card = sourceCard.cloneNode(true);
         card.draggable = false;
-        card.classList.remove('dragging');
+        card.classList.remove('dragging', 'selected');
         
         // Clear slot content and add card
         slot.innerHTML = '';
@@ -149,7 +232,7 @@ class PhilosophyTimelineGame {
         slot.classList.add('filled');
         
         // Remove original card from deck
-        this.draggedCard.remove();
+        sourceCard.remove();
         
         // Track placed card
         const matchSlot = slot.closest('.match-slot');
@@ -345,12 +428,13 @@ class PhilosophyTimelineGame {
         this.score = 0;
         this.completedSets = 0;
         this.placedCards.clear();
+        this.deselectCard();
         
         // Reset all slots
         document.querySelectorAll('.slot').forEach(slot => {
             slot.innerHTML = slot.dataset.type === 'time' ? 'Thả thẻ thời gian' :
-                            slot.dataset.type === 'author' ? 'Thả thẻ tác giả' : 'Thả thẻ tác phẩm';
-            slot.classList.remove('filled', 'error');
+                            slot.dataset.type === 'author' ? 'Thả thẻ triết gia' : 'Thả thẻ tác phẩm';
+            slot.classList.remove('filled', 'error', 'clickable');
         });
         
         // Reset match slots
@@ -361,6 +445,51 @@ class PhilosophyTimelineGame {
         // Recreate cards
         this.createCards();
         this.updateUI();
+    }
+
+    returnCardToDeck(card) {
+        const slot = card.closest('.slot');
+        const matchSlot = slot.closest('.match-slot');
+        const setId = matchSlot.dataset.set;
+        const cardType = card.dataset.type;
+        
+        // Remove from tracking
+        this.placedCards.delete(`${setId}-${cardType}`);
+        
+        // Return card to appropriate deck
+        const deckId = cardType + 'Cards';
+        const deck = document.getElementById(deckId);
+        
+        // Make card draggable again
+        card.draggable = true;
+        card.style.cursor = 'grab';
+        
+        // Reset slot
+        slot.innerHTML = cardType === 'time' ? 'Thả thẻ thời gian' :
+                        cardType === 'author' ? 'Thả thẻ triết gia' : 'Thả thẻ tác phẩm';
+        slot.classList.remove('filled', 'error');
+        
+        // Reset match slot if it was complete
+        matchSlot.classList.remove('complete');
+        
+        // Add card back to deck
+        deck.appendChild(card);
+        
+        // Update UI
+        this.updateUI();
+        
+        // Show return animation
+        this.showReturnAnimation(card);
+    }
+
+    showReturnAnimation(card) {
+        card.style.transform = 'scale(0.8) rotate(-10deg)';
+        card.style.opacity = '0.7';
+        
+        setTimeout(() => {
+            card.style.transform = 'scale(1) rotate(0deg)';
+            card.style.opacity = '1';
+        }, 300);
     }
 
     shuffleArray(array) {

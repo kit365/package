@@ -44,11 +44,11 @@ const gameData = {
             work: "Tư bản tập 2"
         }
     ],
-    // Thẻ bẫy để tăng độ khó
+    // Thẻ bẫy để tăng độ khó - chỉ 1 thẻ mỗi loại
     traps: {
-        times: ["1818", "1895", "1917", "1859"],
-        authors: ["Vladimir Lenin", "Georg Wilhelm Friedrich Hegel", "Ludwig Feuerbach", "Antonio Gramsci"],
-        works: ["Hiện tượng học tinh thần", "Nhà nước và cách mạng", "Bản thảo kinh tế-triết học", "Lời tựa cho Góp phần phê phán"]
+        times: ["1859"],
+        authors: ["Vladimir Lenin"],
+        works: ["Nhà nước và cách mạng"]
     }
 };
 

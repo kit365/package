@@ -209,6 +209,47 @@ header p {
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
+/* Placed cards have different cursor to indicate they can be clicked */
+.card:not([draggable]) {
+    cursor: pointer;
+}
+
+.card:not([draggable]):hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+/* Selected card styling */
+.card.selected {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 0 20px rgba(52,152,219,0.6);
+    border: 2px solid #3498db;
+    animation: selectedPulse 1.5s infinite;
+}
+
+@keyframes selectedPulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(52,152,219,0.6);
+        border-color: #3498db;
+    }
+    50% { 
+        box-shadow: 0 0 30px rgba(52,152,219,0.8);
+        border-color: #2980b9;
+    }
+}
+
+/* Slot hover when card is selected */
+.slot:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.05);
+}
+
+.slot.clickable {
+    cursor: pointer;
+    border-style: solid;
+    border-color: rgba(52,152,219,0.5);
+}
+
 .card.dragging {
     opacity: 0.7;
     transform: rotate(8deg) scale(1.1);
